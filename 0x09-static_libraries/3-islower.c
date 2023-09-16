@@ -4,7 +4,7 @@
  * @c: the character to check
  * Return: 0 or 1
  */
-int _islower(char c)
+int _islower(int c)
 {
 	return (c >= 'a' && c <= 'z');
 }
