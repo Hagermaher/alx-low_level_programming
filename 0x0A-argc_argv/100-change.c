@@ -6,12 +6,12 @@
  * for an amount of money
  * @argc: number of argumnets
  * @argv: array of arguments
- * Return: 0 (on success)
+ * Return: 0 (on success), 1 on error
  */
 int main(int argc, char *argv[])
 {
 	int num, res, j;
-	int consit[] = (25, 10, 5, 2, 1);
+	int consit[] = {25, 10, 5, 2, 1};
 
 	if (argc != 2)
 	{
