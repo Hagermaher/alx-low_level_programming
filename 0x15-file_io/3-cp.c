@@ -8,7 +8,7 @@ void cf(int s);
 /**
  * buff - allocat 1024
  * @file: file name
- * Return : pointer
+ * Return: pointer
  */
 char *buff(char *file)
 {
@@ -45,13 +45,13 @@ void cs(int f)
  * cp - copy file content to other
  * @argc: num
  * @argv: array
- * Return: 0
+ * Return: 0 on success
  * Description: argumebt conditions
  */
 int cp(int argc, char *argv[])
 {
 	int fr, el, re, w;
-	char *buff;
+	char *buffer;
 
 	if (argc != 3)
 	{
@@ -59,3 +59,36 @@ int cp(int argc, char *argv[])
 		exit(97);
 	}
 
+	buffer = buff(argv[2]);
+	fr = open(argv[1], O_RDONLY);
+	re = read(fr, buffer, 1024);
+	el = open(argv[2], O_CREAT | O_WRONLY | O_TRUNC, 0664);
+
+	do {
+		if (fr == -1 || re == -1)
+		{
+			dprintf(STDERR_FILENO,
+					"Error: Can't read from file %s\n", argv[1]);
+			free(buffer);
+			exit(98);
+		}
+
+		w = write(el, buffer, re);
+		if (el == -1 || w == -1)
+		{
+			dprintf(STDERR_FILENO,
+					"Error: Can't write to %s\n", argv[2]);
+			free(buffer);
+			exit(99);
+		}
+
+		re = read(fr, buffer, 1024);
+		el = open(argv[2], O_WRONLY | O_APPEND);
+	} while (re > 0);
+
+	free(buffer);
+	cf(fr);
+	cf(el);
+
+	return (0);
+}
